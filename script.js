@@ -3,6 +3,7 @@ const itemForm = document.getElementById('item-form');
 const itemInput = document.getElementById('item-input');
 const itemList = document.getElementById('item-list');
 const clearBtn = document.getElementById('clear');
+const filter = document.getElementById('filter');
 // Functions
 function addItem(e) {
   e.preventDefault();
@@ -22,7 +23,8 @@ function addItem(e) {
 
   //   Append to li
   const button = createButton('remove-item btn-link text-red');
-
+  // Recheck UI after adding children
+  checkUI();
   li.appendChild(button);
 
   //   Append to list
@@ -51,9 +53,14 @@ function removeItem(e) {
   // Get the parent
   // Check whether it has the .remove-item class
   if (e.target.parentElement.classList.contains('remove-item')) {
-    // Remove the whole <li> not just the <i>
-    // icon < button < li < list etc...
-    e.target.parentElement.parentElement.remove();
+    // Check intention
+    if (window.confirm('Are you sure you want to delete the item?')) {
+      // Remove the whole <li> not just the <i>
+      // icon < button < li < list etc...
+      e.target.parentElement.parentElement.remove();
+      // Recheck UI after removing items
+      checkUI();
+    }
   }
 }
 
@@ -61,6 +68,22 @@ function removeItem(e) {
 function clearItems() {
   while (itemList.firstChild) {
     itemList.removeChild(itemList.firstChild);
+  }
+  // Recheck UI after clearing items
+  checkUI();
+}
+
+// Chec UI - to update state
+function checkUI() {
+  const items = itemList.querySelectorAll('li');
+  // If list length 0, don't show
+  if (items.length === 0) {
+    clearBtn.style.display = 'none';
+    filter.style.display = 'none';
+  } else {
+    // Show them if there are items in list
+    clearBtn.style.display = 'block';
+    filter.style.display = 'block';
   }
 }
 
@@ -71,3 +94,6 @@ itemForm.addEventListener('submit', addItem);
 itemList.addEventListener('click', removeItem);
 // Clear all button
 clearBtn.addEventListener('click', clearItems);
+
+// Global UI check for page load/reload
+checkUI();
