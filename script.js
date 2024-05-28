@@ -73,6 +73,25 @@ function clearItems() {
   checkUI();
 }
 
+// Filter items
+function filterItems(e) {
+  const text = e.target.value.toLowerCase();
+
+  const lis = itemList.querySelectorAll('li');
+  lis.forEach((item) => {
+    // firstChild in this case is the first child inside of the <li>
+    const itemName = item.firstChild.textContent.toLowerCase();
+
+    // Checks to see if it exists [return of -1] = doesn't exist
+    if (itemName.indexOf(text) != -1) {
+      // Say, we type [a], it will display those that have an <a>, the others will be displayed <none>
+      item.style.display = 'flex';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
 // Chec UI - to update state
 function checkUI() {
   const items = itemList.querySelectorAll('li');
@@ -94,6 +113,7 @@ itemForm.addEventListener('submit', addItem);
 itemList.addEventListener('click', removeItem);
 // Clear all button
 clearBtn.addEventListener('click', clearItems);
-
+// Filter
+filter.addEventListener('input', filterItems);
 // Global UI check for page load/reload
 checkUI();
