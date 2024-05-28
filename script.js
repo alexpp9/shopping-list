@@ -44,7 +44,21 @@ function createIcon(classes) {
   return icon;
 }
 
+// Remove item
+function removeItem(e) {
+  // We're looking to click on the icon
+  // Get the parent
+  // Check whether it has the .remove-item class
+  if (e.target.parentElement.classList.contains('remove-item')) {
+    // Remove the whole <li> not just the <i>
+    // icon < button < li < list etc...
+    e.target.parentElement.parentElement.remove();
+  }
+}
+
 // Event Listeners
 
 // Form
 itemForm.addEventListener('submit', addItem);
+// List
+itemList.addEventListener('click', removeItem);
