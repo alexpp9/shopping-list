@@ -2,6 +2,7 @@
 const itemForm = document.getElementById('item-form');
 const itemInput = document.getElementById('item-input');
 const itemList = document.getElementById('item-list');
+const clearBtn = document.getElementById('clear');
 // Functions
 function addItem(e) {
   e.preventDefault();
@@ -56,9 +57,17 @@ function removeItem(e) {
   }
 }
 
-// Event Listeners
+// Clear all items
+function clearItems() {
+  while (itemList.firstChild) {
+    itemList.removeChild(itemList.firstChild);
+  }
+}
 
+// Event Listeners
 // Form
 itemForm.addEventListener('submit', addItem);
 // List
 itemList.addEventListener('click', removeItem);
+// Clear all button
+clearBtn.addEventListener('click', clearItems);
