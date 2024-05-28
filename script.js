@@ -156,16 +156,22 @@ function checkUI() {
   }
 }
 
-// Event Listeners
-// Form
-itemForm.addEventListener('submit', onAddItemSubmit);
-// List
-itemList.addEventListener('click', removeItem);
-// Clear all button
-clearBtn.addEventListener('click', clearItems);
-// Filter
-filter.addEventListener('input', filterItems);
-// To populate list with storage items
-document.addEventListener('DOMContentLoaded', displayItems);
-// Global UI check for page load/reload
-checkUI();
+// Initialize APP
+function init() {
+  // Event Listeners
+  // Form
+  itemForm.addEventListener('submit', onAddItemSubmit);
+  // List
+  itemList.addEventListener('click', removeItem);
+  // Clear all button
+  clearBtn.addEventListener('click', clearItems);
+  // Filter
+  filter.addEventListener('input', filterItems);
+  // To populate list with storage items
+  document.addEventListener('DOMContentLoaded', displayItems);
+  // Global UI check for page load/reload
+  checkUI();
+}
+
+// Init all
+init();
