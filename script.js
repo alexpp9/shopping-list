@@ -29,6 +29,8 @@ function addItem(e) {
 
   //   Append to list
   itemList.appendChild(li);
+  // Clear input after adding it;
+  itemInput.value = '';
 }
 // Create button
 function createButton(classes) {
