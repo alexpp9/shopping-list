@@ -5,7 +5,7 @@ const itemList = document.getElementById('item-list');
 const clearBtn = document.getElementById('clear');
 const filter = document.getElementById('filter');
 // Functions
-function addItem(e) {
+function onAddItemSubmit(e) {
   e.preventDefault();
   const newItem = itemInput.value;
   // Validations
@@ -14,24 +14,51 @@ function addItem(e) {
     // Exist function;
     return;
   }
+
+  // New item to DOM
+  addItemToDOM(newItem);
+  // Add to local storage
+  addItemToStorage(newItem);
+  // Recheck UI after adding children
+  checkUI();
+  // Clear input after adding it;
+  itemInput.value = '';
+}
+// Add item to DOM
+function addItemToDOM(item) {
   // Create new item list
   const li = document.createElement('li');
 
   // Get value that's being typed in
   // You want the text inside of an element to be a textNode; [research that]
-  li.appendChild(document.createTextNode(newItem));
+  li.appendChild(document.createTextNode(item));
 
   //   Append to li
   const button = createButton('remove-item btn-link text-red');
-  // Recheck UI after adding children
-  checkUI();
   li.appendChild(button);
 
-  //   Append to list
+  //   Append to list -DOM
   itemList.appendChild(li);
-  // Clear input after adding it;
-  itemInput.value = '';
 }
+
+// Add item to local storage
+function addItemToStorage(item) {
+  // Check to see if items in local storage
+  let itemsFromStorage;
+  if (localStorage.getItem('items') === null) {
+    // If no items in storage, set itemsFromStorage to an empty array
+    itemsFromStorage = [];
+  } else {
+    // If items in storage assign them to our Array
+    itemsFromStorage = JSON.parse(localStorage.getItem('items'));
+  }
+  // Push new items to that same array
+  itemsFromStorage.push(item);
+
+  // Finally Convert to JSON string to save Array to local Storage
+  JSON.stringify(localStorage.setItem('items', itemsFromStorage));
+}
+
 // Create button
 function createButton(classes) {
   const button = document.createElement('button');
@@ -110,7 +137,7 @@ function checkUI() {
 
 // Event Listeners
 // Form
-itemForm.addEventListener('submit', addItem);
+itemForm.addEventListener('submit', onAddItemSubmit);
 // List
 itemList.addEventListener('click', removeItem);
 // Clear all button
