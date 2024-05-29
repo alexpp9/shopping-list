@@ -97,28 +97,51 @@ function getItemsfromStorage() {
   return itemsFromStorage;
 }
 
-// Remove item
-function removeItem(e) {
+// On Click Item
+function onClickItem(e) {
   // We're looking to click on the icon
   // Get the parent
   // Check whether it has the .remove-item class
   if (e.target.parentElement.classList.contains('remove-item')) {
-    // Check intention
-    if (window.confirm('Are you sure you want to delete the item?')) {
-      // Remove the whole <li> not just the <i>
-      // icon < button < li < list etc...
-      e.target.parentElement.parentElement.remove();
-      // Recheck UI after removing items
-      checkUI();
-    }
+    removeItem(e.target.parentElement.parentElement);
   }
 }
 
+// Remove item
+function removeItem(item) {
+  if (confirm('Are you sure? ')) {
+    // Remove item from DOM
+    item.remove();
+
+    // Remove item from storage
+    removeItemFromStorage(item.textContent);
+    // Check UI
+    checkUI();
+  }
+}
+// Remove item from storage
+function removeItemFromStorage(item) {
+  // Retrieves items from storage
+  let itemsFromStorage = getItemsfromStorage();
+
+  // Filter out item to be remove
+  // filter returns a new array with filtered elements based on condition
+  // we then re-asign itemsfromstorage to that new array without our deleted item
+  itemsFromStorage = itemsFromStorage.filter(
+    (i) => i !== item // Return all items that aren't equal to the one we pass in;
+  );
+  // Re-set localstorage with new array without deleted item;
+  localStorage.setItem('items', JSON.stringify(itemsFromStorage));
+}
 // Clear all items
 function clearItems() {
   while (itemList.firstChild) {
     itemList.removeChild(itemList.firstChild);
   }
+
+  // Clear from local storage
+  localStorage.removeItem('items');
+
   // Recheck UI after clearing items
   checkUI();
 }
@@ -162,7 +185,7 @@ function init() {
   // Form
   itemForm.addEventListener('submit', onAddItemSubmit);
   // List
-  itemList.addEventListener('click', removeItem);
+  itemList.addEventListener('click', onClickItem);
   // Clear all button
   clearBtn.addEventListener('click', clearItems);
   // Filter
