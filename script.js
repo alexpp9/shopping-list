@@ -4,6 +4,9 @@ const itemInput = document.getElementById('item-input');
 const itemList = document.getElementById('item-list');
 const clearBtn = document.getElementById('clear');
 const filter = document.getElementById('filter');
+const formBtn = itemForm.querySelector('button');
+// To set edit mode
+let isEditMode = false;
 // Functions
 // Populate from Storage on load
 function displayItems() {
@@ -104,7 +107,28 @@ function onClickItem(e) {
   // Check whether it has the .remove-item class
   if (e.target.parentElement.classList.contains('remove-item')) {
     removeItem(e.target.parentElement.parentElement);
+  } else {
+    // This, we want to happend when we click anywhere else on the <li> except the <x> icon
+    // The <li>
+    setItemToEdit(e.target);
   }
+}
+
+// setItem to Edit
+function setItemToEdit(item) {
+  isEditMode = true;
+  // To remove the class for items that already have it;
+  // So that if we click om another to edit, the previous, doesn't remain modifed;
+  itemList
+    .querySelectorAll('li')
+    .forEach((item) => item.classList.remove('edit-mode'));
+  item.classList.add('edit-mode');
+  formBtn.innerHTML = `
+  <i class="fa-solid fa-pen"></i>
+  Update Item
+  `;
+  formBtn.style.backgroundColor = '#228b22';
+  itemInput.value = item.textContent;
 }
 
 // Remove item
