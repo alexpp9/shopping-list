@@ -30,6 +30,23 @@ function onAddItemSubmit(e) {
     // Exist function;
     return;
   }
+  // Check for editmore
+  if (isEditMode) {
+    // Remove old, put in new;
+    const itemToEdit = itemList.querySelector('.edit-mode');
+    // Remove from storage
+    removeItemFromStorage(itemToEdit.textContent);
+    // Remove the edit-mode class
+    itemToEdit.classList.remove('edit-mode');
+    // Remove it from the DOM
+    itemToEdit.remove();
+    // reset edit
+    isEditMode = false;
+    // After this, is gonna function as if it's adding a new item
+
+    // recheck UI
+    checkUI();
+  }
 
   // New item to DOM
   addItemToDOM(newItem);
@@ -119,6 +136,7 @@ function setItemToEdit(item) {
   isEditMode = true;
   // To remove the class for items that already have it;
   // So that if we click om another to edit, the previous, doesn't remain modifed;
+
   itemList
     .querySelectorAll('li')
     .forEach((item) => item.classList.remove('edit-mode'));
@@ -191,6 +209,8 @@ function filterItems(e) {
 
 // Chec UI - to update state
 function checkUI() {
+  // Always clear input when UI check
+  itemInput.value = '';
   const items = itemList.querySelectorAll('li');
   // If list length 0, don't show
   if (items.length === 0) {
@@ -201,6 +221,15 @@ function checkUI() {
     clearBtn.style.display = 'block';
     filter.style.display = 'block';
   }
+  // change the form btn from edit mode
+  formBtn.innerHTML = `
+    <i class="fa-solid fa-plus"></i>
+    Add Item
+  `;
+  formBtn.style.backgroundColor = '#333';
+
+  // edit mode
+  isEditMode = false;
 }
 
 // Initialize APP
