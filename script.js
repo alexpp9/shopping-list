@@ -43,9 +43,12 @@ function onAddItemSubmit(e) {
     // reset edit
     isEditMode = false;
     // After this, is gonna function as if it's adding a new item
-
-    // recheck UI
-    checkUI();
+  } else {
+    if (checkIfItemExists(newItem)) {
+      alert('That item already exists');
+      checkUI();
+      return;
+    }
   }
 
   // New item to DOM
@@ -129,6 +132,14 @@ function onClickItem(e) {
     // The <li>
     setItemToEdit(e.target);
   }
+}
+
+// Check to see if item already exists
+function checkIfItemExists(item) {
+  const itemsFromStorage = getItemsfromStorage();
+  // include = if it's included in the array
+  // an array method
+  return itemsFromStorage.includes(item);
 }
 
 // setItem to Edit
